@@ -5,6 +5,49 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
 
+const MTB_TRAIL_COLOR_GREEN = "#2e7d32";
+const MTB_TRAIL_COLOR_BLUE = "#1565c0";
+const MTB_TRAIL_COLOR_RED = "#d32f2f";
+const MTB_TRAIL_COLOR_BLACK = "#000000";
+const TRAIL_COLOR_OTHER = "#7b1fa2";
+
+const ROUTE_PAVED_COLOR_0_20 = "#795548";
+const ROUTE_PAVED_COLOR_21_40 = "#a1887f";
+const ROUTE_PAVED_COLOR_41_60 = "#7d9471";
+const ROUTE_PAVED_COLOR_61_80 = "#607d8b";
+const ROUTE_PAVED_COLOR_81_100 = "#9e9e9e";
+const ROUTE_PAVED_COLOR_UNKNOWN = "#bdbdbd";
+
+const routeLineColor = [
+  "case",
+  ["!", ["has", "pavedRatio"]],
+  ROUTE_PAVED_COLOR_UNKNOWN,
+  ["<=", ["get", "pavedRatio"], 0.2],
+  ROUTE_PAVED_COLOR_0_20,
+  ["<=", ["get", "pavedRatio"], 0.4],
+  ROUTE_PAVED_COLOR_21_40,
+  ["<=", ["get", "pavedRatio"], 0.6],
+  ROUTE_PAVED_COLOR_41_60,
+  ["<=", ["get", "pavedRatio"], 0.8],
+  ROUTE_PAVED_COLOR_61_80,
+  ROUTE_PAVED_COLOR_81_100,
+];
+
+const trailLineColor = [
+  "case",
+  ["!=", ["get", "category"], "mtb_trail"],
+  TRAIL_COLOR_OTHER,
+  ["!", ["has", "mtbScale"]],
+  TRAIL_COLOR_OTHER,
+  ["<=", ["get", "mtbScale"], 1],
+  MTB_TRAIL_COLOR_GREEN,
+  ["==", ["get", "mtbScale"], 2],
+  MTB_TRAIL_COLOR_BLUE,
+  ["==", ["get", "mtbScale"], 3],
+  MTB_TRAIL_COLOR_RED,
+  MTB_TRAIL_COLOR_BLACK,
+];
+
 const libertyUrl = "https://tiles.openfreemap.org/styles/liberty";
 const liberty = await fetch(libertyUrl).then((r) => r.json());
 
@@ -38,7 +81,7 @@ const bikeLayers = [
       "line-join": "round",
     },
     paint: {
-      "line-color": ["coalesce", ["get", "color"], "#1565c0"],
+      "line-color": routeLineColor,
       "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.5, 14, 5],
     },
   },
@@ -55,7 +98,7 @@ const bikeLayers = [
       "text-size": 12,
     },
     paint: {
-      "text-color": "#1b5e20",
+      "text-color": routeLineColor,
       "text-halo-color": "#ffffff",
       "text-halo-width": 1.5,
     },
@@ -83,7 +126,7 @@ const bikeLayers = [
       "line-join": "round",
     },
     paint: {
-      "line-color": ["coalesce", ["get", "color"], "#2e7d32"],
+      "line-color": trailLineColor,
       "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 14, 4],
     },
   },
@@ -100,7 +143,7 @@ const bikeLayers = [
       "text-size": 11,
     },
     paint: {
-      "text-color": "#33691e",
+      "text-color": trailLineColor,
       "text-halo-color": "#ffffff",
       "text-halo-width": 1.2,
     },
