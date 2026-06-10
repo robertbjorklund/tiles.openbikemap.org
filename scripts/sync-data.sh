@@ -1,8 +1,10 @@
 #!/bin/sh
 set -euo pipefail
 
-SOURCE_DIR="${1:-../openbikedata-processor/data}"
-DEST_DIR="$(cd "$(dirname "$0")/.." && pwd)/mbtiles"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+TILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+SOURCE_DIR="${1:-$TILES_DIR/../openbikedata-processor/data}"
+DEST_DIR="$TILES_DIR/mbtiles"
 
 mkdir -p "$DEST_DIR"
 

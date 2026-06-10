@@ -1,11 +1,20 @@
 param(
-  [string]$SourceDir = "..\openbikedata-processor\data"
+  [string]$SourceDir
 )
 
-$DestDir = Join-Path $PSScriptRoot "..\mbtiles" | Resolve-Path -ErrorAction SilentlyContinue
-if (-not $DestDir) {
-  $DestDir = New-Item -ItemType Directory -Path (Join-Path $PSScriptRoot "..\mbtiles") -Force
+$ErrorActionPreference = "Stop"
+
+$TilesRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
+if (-not $SourceDir) {
+  $SourceDir = Join-Path $TilesRoot "..\openbikedata-processor\data"
 }
+$SourceDir = Resolve-Path $SourceDir
+
+$DestDir = Join-Path $TilesRoot "mbtiles"
+if (-not (Test-Path $DestDir)) {
+  New-Item -ItemType Directory -Path $DestDir -Force | Out-Null
+}
+$DestDir = Resolve-Path $DestDir
 
 $SourceFile = Join-Path $SourceDir "openbikemap.mbtiles"
 if (-not (Test-Path $SourceFile)) {

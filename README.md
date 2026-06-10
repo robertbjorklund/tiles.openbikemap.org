@@ -15,22 +15,48 @@ This repo mirrors the role of `tiles.openskimap.org` in the OpenSkiMap stack: it
 
 ## Prerequisites
 
-- [Docker](https://www.docker.com/)
-- Generated `openbikemap.mbtiles` from [openbikedata-processor](https://github.com/robertbjorklund/openbikedata-processor)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes tippecanoe via the processor image)
+- [openbikedata-processor](https://github.com/robertbjorklund/openbikedata-processor) cloned alongside this repo
 
-## Quick start
+## Regions
+
+| Region | Command | Notes |
+|--------|---------|-------|
+| Stockholm (dev) | `.\scripts\dev-tiles.ps1` | Default test area, ~5–15 min |
+| Sweden | `.\scripts\dev-tiles-sweden.ps1` | Full country, **2–6+ hours**; trails split into 6 Overpass grid cells |
+| Resort towns | `.\scripts\dev-tiles-resorts.ps1` | Are, Salen, Rorbacksnas, Lofsdalen, Jarvso (~15–30 min) |
+
+Sweden bbox: `[10.96, 55.34, 24.18, 69.06]` (mainland). Trails are downloaded in a 6-cell grid; routes use one national query. Overpass may return 504/429 — the processor retries and rotates mirrors automatically.
+
+## Quick start (one command)
+
+From this repo — generates tiles in Docker, copies mbtiles, starts tileserver:
+
+```powershell
+# Windows
+.\scripts\dev-tiles.ps1
+```
 
 ```bash
-# 1. Generate tiles (from openbikedata-processor)
-cd ../openbikedata-processor
-BBOX='[17.9,59.32,18.05,59.36]' GENERATE_TILES=1 npm run prepare-geojson
+# Linux / macOS / Git Bash
+./scripts/dev-tiles.sh
+```
 
-# 2. Copy mbtiles into this repo
+Re-run tile build without re-downloading OSM data:
+
+```powershell
+.\scripts\dev-tiles.ps1 -SkipDownload
+```
+
+### Manual steps
+
+```bash
+cd ../openbikedata-processor
+docker compose run --rm processor
+
 cd ../tiles.openbikemap.org
 ./scripts/sync-data.sh
-
-# 3. Start tile server (http://localhost:8083)
-docker compose up
+docker compose up -d
 ```
 
 Endpoints:
@@ -39,7 +65,14 @@ Endpoints:
 - TileJSON: http://localhost:8083/data/openbikemap.json
 - Health: http://localhost:8083/health
 
-For local frontend development, set `VITE_TILES_BASE_URL=http://localhost:8083` in `openbikemap.org`.
+### Frontend
+
+Copy `openbikemap.org/.env.local.example` to `.env.local` (or run dev-tiles.ps1 which documents this), then:
+
+```bash
+cd ../openbikemap.org
+yarn start
+```
 
 ## Regenerating the style
 
