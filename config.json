@@ -1,0 +1,27 @@
+{
+  "options": {
+    "paths": {
+      "root": "/data",
+      "fonts": "fonts",
+      "sprites": "sprites",
+      "styles": "styles",
+      "mbtiles": "mbtiles"
+    },
+    "serveAllFonts": true,
+    "serveAllStyles": true
+  },
+  "data": {
+    "openbikemap": {
+      "mbtiles": "openbikemap.mbtiles"
+    }
+  },
+  "styles": {
+    "terrain": {
+      "style": "terrain.json",
+      "tilejson": {
+        "type": "baselayer",
+        "bounds": [-180, -85.0511, 180, 85.0511]
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "tiles.openbikemap.org",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MapLibre styles and tile hosting for OpenBikeMap.org",
+  "scripts": {
+    "build-style": "node scripts/build-style.mjs",
+    "start": "docker compose up"
+  },
+  "license": "Apache-2.0"
+}

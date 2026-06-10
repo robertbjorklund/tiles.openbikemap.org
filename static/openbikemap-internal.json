@@ -1,0 +1,22 @@
+{
+  "tilejson": "2.2.0",
+  "name": "openbikemap",
+  "description": "Bicycle trails and routes from OpenStreetMap.",
+  "version": "1.0.0",
+  "scheme": "xyz",
+  "format": "pbf",
+  "tiles": ["https://tiles.openbikemap.org/openbikemap/{z}/{x}/{y}.pbf"],
+  "bounds": [-180, -85, 180, 85],
+  "minzoom": 0,
+  "maxzoom": 15,
+  "vector_layers": [
+    {
+      "id": "trails",
+      "description": "Cycleways, paths, MTB trails, and gravel tracks"
+    },
+    {
+      "id": "routes",
+      "description": "Signed bicycle route relations"
+    }
+  ]
+}

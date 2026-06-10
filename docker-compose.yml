@@ -1,0 +1,24 @@
+services:
+  tileserver:
+    image: maptiler/tileserver-gl-light:latest
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./config.json:/data/config.json:ro
+      - ./styles:/data/styles:ro
+      - ./mbtiles:/data/mbtiles:ro
+      - ./static:/data/static:ro
+    command: ["--config", "/data/config.json"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
