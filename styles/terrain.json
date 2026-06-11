@@ -6072,50 +6072,70 @@
         "line-color": [
           "case",
           [
-            "!",
-            [
-              "has",
-              "pavedRatio"
-            ]
+            "has",
+            "pavedRatio"
           ],
-          "#bdbdbd",
           [
-            "<=",
+            "case",
             [
-              "get",
-              "pavedRatio"
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.2
             ],
-            0.2
+            "#795548",
+            [
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.4
+            ],
+            "#a1887f",
+            [
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.6
+            ],
+            "#7d9471",
+            [
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.8
+            ],
+            "#607d8b",
+            "#9e9e9e"
           ],
-          "#795548",
           [
-            "<=",
-            [
-              "get",
-              "pavedRatio"
-            ],
-            0.4
+            "has",
+            "color"
           ],
-          "#a1887f",
           [
-            "<=",
-            [
-              "get",
-              "pavedRatio"
-            ],
-            0.6
+            "get",
+            "color"
           ],
-          "#7d9471",
-          [
-            "<=",
-            [
-              "get",
-              "pavedRatio"
-            ],
-            0.8
-          ],
-          "#607d8b",
-          "#9e9e9e"
+          "#bdbdbd"
         ],
         "line-width": [
           "interpolate",
@@ -6160,50 +6180,70 @@
         "text-color": [
           "case",
           [
-            "!",
-            [
-              "has",
-              "pavedRatio"
-            ]
+            "has",
+            "pavedRatio"
           ],
-          "#bdbdbd",
           [
-            "<=",
+            "case",
             [
-              "get",
-              "pavedRatio"
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.2
             ],
-            0.2
+            "#795548",
+            [
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.4
+            ],
+            "#a1887f",
+            [
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.6
+            ],
+            "#7d9471",
+            [
+              "<=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "pavedRatio"
+                ]
+              ],
+              0.8
+            ],
+            "#607d8b",
+            "#9e9e9e"
           ],
-          "#795548",
           [
-            "<=",
-            [
-              "get",
-              "pavedRatio"
-            ],
-            0.4
+            "has",
+            "color"
           ],
-          "#a1887f",
           [
-            "<=",
-            [
-              "get",
-              "pavedRatio"
-            ],
-            0.6
+            "get",
+            "color"
           ],
-          "#7d9471",
-          [
-            "<=",
-            [
-              "get",
-              "pavedRatio"
-            ],
-            0.8
-          ],
-          "#607d8b",
-          "#9e9e9e"
+          "#bdbdbd"
         ],
         "text-halo-color": "#ffffff",
         "text-halo-width": 1.5
@@ -6254,7 +6294,14 @@
             ],
             "mtb_trail"
           ],
-          "#7b1fa2",
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#7b1fa2"
+          ],
           [
             "!",
             [
@@ -6262,12 +6309,22 @@
               "mtbScale"
             ]
           ],
-          "#7b1fa2",
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#7b1fa2"
+          ],
           [
             "<=",
             [
-              "get",
-              "mtbScale"
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
             ],
             1
           ],
@@ -6275,8 +6332,11 @@
           [
             "==",
             [
-              "get",
-              "mtbScale"
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
             ],
             2
           ],
@@ -6284,8 +6344,11 @@
           [
             "==",
             [
-              "get",
-              "mtbScale"
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
             ],
             3
           ],
@@ -6342,7 +6405,14 @@
             ],
             "mtb_trail"
           ],
-          "#7b1fa2",
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#7b1fa2"
+          ],
           [
             "!",
             [
@@ -6350,12 +6420,22 @@
               "mtbScale"
             ]
           ],
-          "#7b1fa2",
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#7b1fa2"
+          ],
           [
             "<=",
             [
-              "get",
-              "mtbScale"
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
             ],
             1
           ],
@@ -6363,8 +6443,11 @@
           [
             "==",
             [
-              "get",
-              "mtbScale"
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
             ],
             2
           ],
@@ -6372,8 +6455,11 @@
           [
             "==",
             [
-              "get",
-              "mtbScale"
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
             ],
             3
           ],

@@ -20,42 +20,38 @@ const ROUTE_PAVED_COLOR_UNKNOWN = "#bdbdbd";
 
 const routeLineColor = [
   "case",
-  ["!", ["has", "pavedRatio"]],
+  ["has", "pavedRatio"],
+  [
+    "case",
+    ["<=", ["to-number", ["get", "pavedRatio"]], 0.2],
+    ROUTE_PAVED_COLOR_0_20,
+    ["<=", ["to-number", ["get", "pavedRatio"]], 0.4],
+    ROUTE_PAVED_COLOR_21_40,
+    ["<=", ["to-number", ["get", "pavedRatio"]], 0.6],
+    ROUTE_PAVED_COLOR_41_60,
+    ["<=", ["to-number", ["get", "pavedRatio"]], 0.8],
+    ROUTE_PAVED_COLOR_61_80,
+    ROUTE_PAVED_COLOR_81_100,
+  ],
+  ["has", "color"],
+  ["get", "color"],
   ROUTE_PAVED_COLOR_UNKNOWN,
-  ["<=", ["get", "pavedRatio"], 0.2],
-  ROUTE_PAVED_COLOR_0_20,
-  ["<=", ["get", "pavedRatio"], 0.4],
-  ROUTE_PAVED_COLOR_21_40,
-  ["<=", ["get", "pavedRatio"], 0.6],
-  ROUTE_PAVED_COLOR_41_60,
-  ["<=", ["get", "pavedRatio"], 0.8],
-  ROUTE_PAVED_COLOR_61_80,
-  ROUTE_PAVED_COLOR_81_100,
 ];
 
 const trailLineColor = [
   "case",
   ["!=", ["get", "category"], "mtb_trail"],
-  TRAIL_COLOR_OTHER,
+  ["coalesce", ["get", "color"], TRAIL_COLOR_OTHER],
   ["!", ["has", "mtbScale"]],
-  TRAIL_COLOR_OTHER,
-  ["<=", ["get", "mtbScale"], 1],
+  ["coalesce", ["get", "color"], TRAIL_COLOR_OTHER],
+  ["<=", ["to-number", ["get", "mtbScale"]], 1],
   MTB_TRAIL_COLOR_GREEN,
-  ["==", ["get", "mtbScale"], 2],
+  ["==", ["to-number", ["get", "mtbScale"]], 2],
   MTB_TRAIL_COLOR_BLUE,
-  ["==", ["get", "mtbScale"], 3],
+  ["==", ["to-number", ["get", "mtbScale"]], 3],
   MTB_TRAIL_COLOR_RED,
   MTB_TRAIL_COLOR_BLACK,
 ];
-
-const libertyUrl = "https://tiles.openfreemap.org/styles/liberty";
-const liberty = await fetch(libertyUrl).then((r) => r.json());
-
-liberty.name = "OpenBikeMap Terrain";
-liberty.sources.openbikemap = {
-  type: "vector",
-  url: "mbtiles://openbikemap",
-};
 
 const bikeLayers = [
   {
@@ -174,11 +170,51 @@ const bikeLayers = [
   },
 ];
 
+const libertyUrl = "https://tiles.openfreemap.org/styles/liberty";
+const liberty = await fetch(libertyUrl).then((r) => r.json());
+
+liberty.name = "OpenBikeMap Terrain";
+liberty.sources.openbikemap = {
+  type: "vector",
+  url: "mbtiles://openbikemap",
+};
 liberty.layers.push(...bikeLayers);
+
+const satellite = {
+  version: 8,
+  name: "OpenBikeMap Satellite",
+  glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+  sources: {
+    satellite: {
+      type: "raster",
+      tiles: [
+        "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      ],
+      tileSize: 256,
+      attribution: "Powered by Esri",
+    },
+    openbikemap: {
+      type: "vector",
+      url: "mbtiles://openbikemap",
+    },
+  },
+  layers: [
+    {
+      id: "satellite",
+      type: "raster",
+      source: "satellite",
+    },
+    ...bikeLayers,
+  ],
+};
 
 mkdirSync(join(root, "styles"), { recursive: true });
 writeFileSync(
   join(root, "styles", "terrain.json"),
   JSON.stringify(liberty, null, 2),
 );
-console.log("Wrote styles/terrain.json");
+writeFileSync(
+  join(root, "styles", "satellite.json"),
+  JSON.stringify(satellite, null, 2),
+);
+console.log("Wrote styles/terrain.json and styles/satellite.json");
