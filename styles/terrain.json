@@ -6073,69 +6073,25 @@
           "case",
           [
             "has",
-            "pavedRatio"
+            "network"
           ],
           [
-            "case",
+            "match",
             [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.2
+              "get",
+              "network"
             ],
-            "#795548",
-            [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.4
-            ],
-            "#a1887f",
-            [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.6
-            ],
-            "#7d9471",
-            [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.8
-            ],
-            "#607d8b",
-            "#9e9e9e"
+            "icn",
+            "#b71c1c",
+            "ncn",
+            "#c62828",
+            "rcn",
+            "#e65100",
+            "lcn",
+            "#2e7d32",
+            "#1565c0"
           ],
-          [
-            "has",
-            "color"
-          ],
-          [
-            "get",
-            "color"
-          ],
-          "#bdbdbd"
+          "#1565c0"
         ],
         "line-width": [
           "interpolate",
@@ -6181,69 +6137,25 @@
           "case",
           [
             "has",
-            "pavedRatio"
+            "network"
           ],
           [
-            "case",
+            "match",
             [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.2
+              "get",
+              "network"
             ],
-            "#795548",
-            [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.4
-            ],
-            "#a1887f",
-            [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.6
-            ],
-            "#7d9471",
-            [
-              "<=",
-              [
-                "to-number",
-                [
-                  "get",
-                  "pavedRatio"
-                ]
-              ],
-              0.8
-            ],
-            "#607d8b",
-            "#9e9e9e"
+            "icn",
+            "#b71c1c",
+            "ncn",
+            "#c62828",
+            "rcn",
+            "#e65100",
+            "lcn",
+            "#2e7d32",
+            "#1565c0"
           ],
-          [
-            "has",
-            "color"
-          ],
-          [
-            "get",
-            "color"
-          ],
-          "#bdbdbd"
+          "#1565c0"
         ],
         "text-halo-color": "#ffffff",
         "text-halo-width": 1.5

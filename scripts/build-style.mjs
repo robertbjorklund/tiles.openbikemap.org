@@ -11,31 +11,30 @@ const MTB_TRAIL_COLOR_RED = "#d32f2f";
 const MTB_TRAIL_COLOR_BLACK = "#000000";
 const TRAIL_COLOR_OTHER = "#7b1fa2";
 
-const ROUTE_PAVED_COLOR_0_20 = "#795548";
-const ROUTE_PAVED_COLOR_21_40 = "#a1887f";
-const ROUTE_PAVED_COLOR_41_60 = "#7d9471";
-const ROUTE_PAVED_COLOR_61_80 = "#607d8b";
-const ROUTE_PAVED_COLOR_81_100 = "#9e9e9e";
-const ROUTE_PAVED_COLOR_UNKNOWN = "#bdbdbd";
+/** Keep in sync with openbikemap.org src/types/RouteNetwork.ts */
+const ROUTE_NETWORK_COLOR_ICN = "#b71c1c";
+const ROUTE_NETWORK_COLOR_NCN = "#c62828";
+const ROUTE_NETWORK_COLOR_RCN = "#e65100";
+const ROUTE_NETWORK_COLOR_LCN = "#2e7d32";
+const ROUTE_NETWORK_DEFAULT_COLOR = "#1565c0";
 
 const routeLineColor = [
   "case",
-  ["has", "pavedRatio"],
+  ["has", "network"],
   [
-    "case",
-    ["<=", ["to-number", ["get", "pavedRatio"]], 0.2],
-    ROUTE_PAVED_COLOR_0_20,
-    ["<=", ["to-number", ["get", "pavedRatio"]], 0.4],
-    ROUTE_PAVED_COLOR_21_40,
-    ["<=", ["to-number", ["get", "pavedRatio"]], 0.6],
-    ROUTE_PAVED_COLOR_41_60,
-    ["<=", ["to-number", ["get", "pavedRatio"]], 0.8],
-    ROUTE_PAVED_COLOR_61_80,
-    ROUTE_PAVED_COLOR_81_100,
+    "match",
+    ["get", "network"],
+    "icn",
+    ROUTE_NETWORK_COLOR_ICN,
+    "ncn",
+    ROUTE_NETWORK_COLOR_NCN,
+    "rcn",
+    ROUTE_NETWORK_COLOR_RCN,
+    "lcn",
+    ROUTE_NETWORK_COLOR_LCN,
+    ROUTE_NETWORK_DEFAULT_COLOR,
   ],
-  ["has", "color"],
-  ["get", "color"],
-  ROUTE_PAVED_COLOR_UNKNOWN,
+  ROUTE_NETWORK_DEFAULT_COLOR,
 ];
 
 const trailLineColor = [
