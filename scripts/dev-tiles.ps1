@@ -39,7 +39,7 @@ if ($Region -eq "sweden") {
   $env:OVERPASS_TIMEOUT = "7200"
   $env:OVERPASS_GRID_PAUSE_MS = "90000"
   $env:TRAILS_BBOX_GRID = "/app/scripts/sweden-trails-grid.json"
-  Write-Host "    Trails: 6-cell grid. Routes: one query for full Sweden bbox."
+  Write-Host "    Trails and routes: 6-cell grid (routes deduped by OSM id)."
   Write-Host "    Using extended memory (8 GB), Overpass timeout (2 h), 90s pause between trail cells."
 }
 
@@ -47,7 +47,7 @@ if ($Region -eq "resorts") {
   $env:OVERPASS_TIMEOUT = "600"
   $env:OVERPASS_GRID_PAUSE_MS = "30000"
   $env:TRAILS_BBOX_GRID = "/app/scripts/resort-towns-grid.json"
-  Write-Host "    Trails: 5 resort-town cells. Routes: one query for resorts region bbox."
+  Write-Host "    Trails and routes: 5 resort-town cells (routes deduped by OSM id)."
   Write-Host "    Using 30s pause between trail cells."
 }
 
