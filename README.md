@@ -94,7 +94,7 @@ npm run build-style
 
 | Source layer | Description |
 |--------------|-------------|
-| `trails` | Cycleways, paths, MTB trails, gravel tracks |
+| `trails` | MTB trails (`mtb:scale`, `mtb:scale:imba`, or `mtb=yes` on path/track) |
 | `routes` | Signed bicycle route relations |
 
 Properties match `mapboxgl_*.geojson` output from the data processor (`id`, `name`, `category`, `color`, etc.).

@@ -93,8 +93,6 @@ const trailLineColor = [
     false,
   ],
   imbaLineColor,
-  ["!=", ["get", "category"], "mtb_trail"],
-  ["coalesce", ["get", "color"], TRAIL_COLOR_OTHER],
   ["!", ["has", "mtbScale"]],
   ["coalesce", ["get", "color"], TRAIL_COLOR_OTHER],
   ["<=", ["to-number", ["get", "mtbScale"]], 1],
