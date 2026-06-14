@@ -38,15 +38,17 @@ if ($Region -eq "sweden") {
   $env:MAX_OLD_SPACE_SIZE = "8192"
   $env:OVERPASS_TIMEOUT = "7200"
   $env:OVERPASS_GRID_PAUSE_MS = "90000"
-  $env:BBOX_GRID = "/app/scripts/sweden-trails-grid.json"
-  Write-Host "    Using extended memory (8 GB), Overpass timeout (2 h), and 6-cell grid."
+  $env:TRAILS_BBOX_GRID = "/app/scripts/sweden-trails-grid.json"
+  Write-Host "    Trails: 6-cell grid. Routes: one query for full Sweden bbox."
+  Write-Host "    Using extended memory (8 GB), Overpass timeout (2 h), 90s pause between trail cells."
 }
 
 if ($Region -eq "resorts") {
   $env:OVERPASS_TIMEOUT = "600"
   $env:OVERPASS_GRID_PAUSE_MS = "30000"
-  $env:BBOX_GRID = "/app/scripts/resort-towns-grid.json"
-  Write-Host "    Resort validation: Are, Salen, Rorbacksnas, Lofsdalen, Jarvso (5 cells, 30s pause)."
+  $env:TRAILS_BBOX_GRID = "/app/scripts/resort-towns-grid.json"
+  Write-Host "    Trails: 5 resort-town cells. Routes: one query for resorts region bbox."
+  Write-Host "    Using 30s pause between trail cells."
 }
 
 $dockerArgs = @(

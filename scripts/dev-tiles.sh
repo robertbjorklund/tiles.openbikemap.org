@@ -22,6 +22,8 @@ case "$REGION" in
     BBOX="${BBOX:-[10.96,55.34,24.18,69.06]}"
     export MAX_OLD_SPACE_SIZE="${MAX_OLD_SPACE_SIZE:-8192}"
     export OVERPASS_TIMEOUT="${OVERPASS_TIMEOUT:-7200}"
+    export OVERPASS_GRID_PAUSE_MS="${OVERPASS_GRID_PAUSE_MS:-90000}"
+    export TRAILS_BBOX_GRID="${TRAILS_BBOX_GRID:-/app/scripts/sweden-trails-grid.json}"
     ;;
   *) echo "Unknown region: $REGION"; exit 1 ;;
 esac

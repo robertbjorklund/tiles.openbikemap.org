@@ -26,7 +26,7 @@ This repo mirrors the role of `tiles.openskimap.org` in the OpenSkiMap stack: it
 | Sweden | `.\scripts\dev-tiles-sweden.ps1` | Full country, **2–6+ hours**; trails split into 6 Overpass grid cells |
 | Resort towns | `.\scripts\dev-tiles-resorts.ps1` | Are, Salen, Rorbacksnas, Lofsdalen, Jarvso (~15–30 min) |
 
-Sweden bbox: `[10.96, 55.34, 24.18, 69.06]` (mainland). Trails are downloaded in a 6-cell grid; routes use one national query. Overpass may return 504/429 — the processor retries and rotates mirrors automatically.
+Sweden bbox: `[10.96, 55.34, 24.18, 69.06]` (mainland). **Trails** download in a 6-cell grid (`TRAILS_BBOX_GRID`); **routes** use one query for the full region `BBOX`. Overpass may return 504/429 — the processor retries and rotates mirrors automatically.
 
 ## Quick start (one command)
 
