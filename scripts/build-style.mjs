@@ -15,6 +15,96 @@ const IMBA_TRAIL_COLOR_WHITE = "#ffffff";
 /** Dashed MTB lines — solid routes stay continuous for contrast */
 const MTB_TRAIL_DASHARRAY = [1, 2];
 
+/** High-res Terrarium DEM (512 px) — replaces coarse AWS Tilezen 256 px tiles */
+const DEM_SOURCE = {
+  type: "raster-dem",
+  url: "https://tiles.mapterhorn.com/tilejson.json",
+  encoding: "terrarium",
+  tileSize: 512,
+};
+
+const hillshadeLayer = {
+  id: "hillshade",
+  type: "hillshade",
+  source: "hillshade",
+  minzoom: 2,
+  paint: {
+    // Zoom-scaled: subtle at country scale, stronger when zoomed in
+    "hillshade-exaggeration": [
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      5,
+      0.06,
+      9,
+      0.12,
+      13,
+      0.18,
+    ],
+    // OpenSkiMap uses defaults only — avoid black accent (causes blocky "steps")
+    "hillshade-shadow-color": "#473B24",
+  },
+};
+
+const peakLabelsLayer = {
+  id: "terrain-peak-labels",
+  type: "symbol",
+  source: "openmaptiles",
+  "source-layer": "mountain_peak",
+  minzoom: 11,
+  filter: ["all", ["==", ["get", "class"], "peak"], ["has", "name"]],
+  layout: {
+    "icon-image": "triangle",
+    "icon-size": [
+      "case",
+      ["==", ["get", "rank"], 1],
+      0.7,
+      0.5,
+    ],
+    "symbol-sort-key": ["to-number", ["get", "rank"]],
+    "text-anchor": "top",
+    "text-field": [
+      "concat",
+      ["coalesce", ["get", "name:en"], ["get", "name"]],
+      "\n",
+      ["get", "ele"],
+      " m",
+    ],
+    "text-font": ["Noto Sans Regular"],
+    "text-max-width": 4,
+    "text-offset": [0, 0.5],
+    "text-size": ["interpolate", ["linear"], ["zoom"], 11, 9, 14, 11],
+  },
+  paint: {
+    "icon-color": "hsl(23, 57%, 24%)",
+    "icon-halo-blur": 0.2,
+    "icon-halo-color": "hsl(0, 0%, 100%)",
+    "icon-halo-width": 1,
+    "text-color": "hsl(23, 57%, 24%)",
+    "text-halo-color": "hsl(0, 0%, 100%)",
+    "text-halo-width": 1.2,
+  },
+};
+
+/** Insert hillshade late in the stack (after boundaries), matching OpenSkiMap */
+const HILLSHADE_AFTER_LAYER_IDS = [
+  "boundary_disputed",
+  "boundary_2",
+  "boundary_3",
+];
+
+function insertLayerAfter(layers, layer, afterIds) {
+  for (const id of afterIds) {
+    const index = layers.findIndex((entry) => entry.id === id);
+    if (index >= 0) {
+      layers.splice(index + 1, 0, layer);
+      return;
+    }
+  }
+  const roadIndex = layers.findIndex((entry) => entry.id === "road_area_pattern");
+  layers.splice(roadIndex >= 0 ? roadIndex : layers.length, 0, layer);
+}
+
 /** Keep in sync with openbikemap.org src/types/EuroVelo.ts */
 const EUROVELO_ROUTE_COLOR = "#003399";
 
@@ -249,7 +339,9 @@ liberty.sources.openbikemap = {
   type: "vector",
   url: "mbtiles://openbikemap",
 };
-liberty.layers.push(...bikeLayers);
+liberty.sources.hillshade = { ...DEM_SOURCE };
+insertLayerAfter(liberty.layers, hillshadeLayer, HILLSHADE_AFTER_LAYER_IDS);
+liberty.layers.push(peakLabelsLayer, ...bikeLayers);
 
 const satellite = {
   version: 8,

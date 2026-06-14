@@ -16,6 +16,12 @@
     "openbikemap": {
       "type": "vector",
       "url": "mbtiles://openbikemap"
+    },
+    "hillshade": {
+      "type": "raster-dem",
+      "url": "https://tiles.mapterhorn.com/tilejson.json",
+      "encoding": "terrarium",
+      "tileSize": 512
     }
   },
   "sprite": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
@@ -4139,6 +4145,30 @@
       }
     },
     {
+      "id": "hillshade",
+      "type": "hillshade",
+      "source": "hillshade",
+      "minzoom": 2,
+      "paint": {
+        "hillshade-exaggeration": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          5,
+          0.06,
+          9,
+          0.12,
+          13,
+          0.18
+        ],
+        "hillshade-shadow-color": "#473B24"
+      }
+    },
+    {
       "id": "waterway_line_label",
       "type": "symbol",
       "source": "openmaptiles",
@@ -6035,6 +6065,102 @@
       }
     },
     {
+      "id": "terrain-peak-labels",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "mountain_peak",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "peak"
+        ],
+        [
+          "has",
+          "name"
+        ]
+      ],
+      "layout": {
+        "icon-image": "triangle",
+        "icon-size": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "rank"
+            ],
+            1
+          ],
+          0.7,
+          0.5
+        ],
+        "symbol-sort-key": [
+          "to-number",
+          [
+            "get",
+            "rank"
+          ]
+        ],
+        "text-anchor": "top",
+        "text-field": [
+          "concat",
+          [
+            "coalesce",
+            [
+              "get",
+              "name:en"
+            ],
+            [
+              "get",
+              "name"
+            ]
+          ],
+          "\n",
+          [
+            "get",
+            "ele"
+          ],
+          " m"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-max-width": 4,
+        "text-offset": [
+          0,
+          0.5
+        ],
+        "text-size": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          11,
+          9,
+          14,
+          11
+        ]
+      },
+      "paint": {
+        "icon-color": "hsl(23, 57%, 24%)",
+        "icon-halo-blur": 0.2,
+        "icon-halo-color": "hsl(0, 0%, 100%)",
+        "icon-halo-width": 1,
+        "text-color": "hsl(23, 57%, 24%)",
+        "text-halo-color": "hsl(0, 0%, 100%)",
+        "text-halo-width": 1.2
+      }
+    },
+    {
       "id": "routes-casing",
       "type": "line",
       "source": "openbikemap",
@@ -6360,22 +6486,6 @@
             "#ffffff"
           ],
           [
-            "!=",
-            [
-              "get",
-              "category"
-            ],
-            "mtb_trail"
-          ],
-          [
-            "coalesce",
-            [
-              "get",
-              "color"
-            ],
-            "#7b1fa2"
-          ],
-          [
             "!",
             [
               "has",
@@ -6575,22 +6685,6 @@
             4,
             "#ff9800",
             "#ffffff"
-          ],
-          [
-            "!=",
-            [
-              "get",
-              "category"
-            ],
-            "mtb_trail"
-          ],
-          [
-            "coalesce",
-            [
-              "get",
-              "color"
-            ],
-            "#7b1fa2"
           ],
           [
             "!",

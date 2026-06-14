@@ -348,22 +348,6 @@
             "#ffffff"
           ],
           [
-            "!=",
-            [
-              "get",
-              "category"
-            ],
-            "mtb_trail"
-          ],
-          [
-            "coalesce",
-            [
-              "get",
-              "color"
-            ],
-            "#7b1fa2"
-          ],
-          [
             "!",
             [
               "has",
@@ -563,22 +547,6 @@
             4,
             "#ff9800",
             "#ffffff"
-          ],
-          [
-            "!=",
-            [
-              "get",
-              "category"
-            ],
-            "mtb_trail"
-          ],
-          [
-            "coalesce",
-            [
-              "get",
-              "color"
-            ],
-            "#7b1fa2"
           ],
           [
             "!",
