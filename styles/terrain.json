@@ -6072,6 +6072,65 @@
         "line-color": [
           "case",
           [
+            "any",
+            [
+              ">=",
+              [
+                "index-of",
+                "EuroVelo",
+                [
+                  "coalesce",
+                  [
+                    "get",
+                    "name"
+                  ],
+                  ""
+                ]
+              ],
+              0
+            ],
+            [
+              ">=",
+              [
+                "index-of",
+                "eurovelo",
+                [
+                  "downcase",
+                  [
+                    "coalesce",
+                    [
+                      "get",
+                      "name"
+                    ],
+                    ""
+                  ]
+                ]
+              ],
+              0
+            ],
+            [
+              "==",
+              [
+                "slice",
+                [
+                  "upcase",
+                  [
+                    "coalesce",
+                    [
+                      "get",
+                      "ref"
+                    ],
+                    ""
+                  ]
+                ],
+                0,
+                2
+              ],
+              "EV"
+            ]
+          ],
+          "#003399",
+          [
             "has",
             "network"
           ],
@@ -6082,16 +6141,16 @@
               "network"
             ],
             "icn",
-            "#b71c1c",
+            "#0d47a1",
             "ncn",
-            "#c62828",
+            "#d32f2f",
             "rcn",
-            "#e65100",
+            "#42a5f5",
             "lcn",
             "#2e7d32",
-            "#1565c0"
+            "#7b1fa2"
           ],
-          "#1565c0"
+          "#7b1fa2"
         ],
         "line-width": [
           "interpolate",
@@ -6136,6 +6195,65 @@
         "text-color": [
           "case",
           [
+            "any",
+            [
+              ">=",
+              [
+                "index-of",
+                "EuroVelo",
+                [
+                  "coalesce",
+                  [
+                    "get",
+                    "name"
+                  ],
+                  ""
+                ]
+              ],
+              0
+            ],
+            [
+              ">=",
+              [
+                "index-of",
+                "eurovelo",
+                [
+                  "downcase",
+                  [
+                    "coalesce",
+                    [
+                      "get",
+                      "name"
+                    ],
+                    ""
+                  ]
+                ]
+              ],
+              0
+            ],
+            [
+              "==",
+              [
+                "slice",
+                [
+                  "upcase",
+                  [
+                    "coalesce",
+                    [
+                      "get",
+                      "ref"
+                    ],
+                    ""
+                  ]
+                ],
+                0,
+                2
+              ],
+              "EV"
+            ]
+          ],
+          "#003399",
+          [
             "has",
             "network"
           ],
@@ -6146,16 +6264,16 @@
               "network"
             ],
             "icn",
-            "#b71c1c",
+            "#0d47a1",
             "ncn",
-            "#c62828",
+            "#d32f2f",
             "rcn",
-            "#e65100",
+            "#42a5f5",
             "lcn",
             "#2e7d32",
-            "#1565c0"
+            "#7b1fa2"
           ],
-          "#1565c0"
+          "#7b1fa2"
         ],
         "text-halo-color": "#ffffff",
         "text-halo-width": 1.5
@@ -6182,7 +6300,11 @@
           14,
           7
         ],
-        "line-opacity": 0.9
+        "line-opacity": 0.9,
+        "line-dasharray": [
+          1,
+          2
+        ]
       }
     },
     {
@@ -6198,6 +6320,45 @@
       "paint": {
         "line-color": [
           "case",
+          [
+            "match",
+            [
+              "get",
+              "mtbScaleImba"
+            ],
+            0,
+            true,
+            1,
+            true,
+            2,
+            true,
+            3,
+            true,
+            4,
+            true,
+            false
+          ],
+          [
+            "match",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScaleImba"
+              ]
+            ],
+            0,
+            "#ffffff",
+            1,
+            "#2e7d32",
+            2,
+            "#1565c0",
+            3,
+            "#000000",
+            4,
+            "#ff9800",
+            "#ffffff"
+          ],
           [
             "!=",
             [
@@ -6265,7 +6426,19 @@
             3
           ],
           "#d32f2f",
-          "#000000"
+          [
+            "==",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
+            ],
+            4
+          ],
+          "#000000",
+          "#ff9800"
         ],
         "line-width": [
           "interpolate",
@@ -6279,6 +6452,61 @@
           1,
           14,
           4
+        ],
+        "line-dasharray": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "trails-imba",
+      "type": "line",
+      "source": "openbikemap",
+      "source-layer": "trails",
+      "minzoom": 10,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": [
+          "match",
+          [
+            "to-number",
+            [
+              "get",
+              "mtbScaleImba"
+            ]
+          ],
+          0,
+          "#ffffff",
+          1,
+          "#2e7d32",
+          2,
+          "#1565c0",
+          3,
+          "#000000",
+          4,
+          "#ff9800",
+          "#ffffff"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          10,
+          1.5,
+          14,
+          4
+        ],
+        "line-dasharray": [
+          1,
+          2
         ]
       }
     },
@@ -6310,6 +6538,45 @@
         "text-color": [
           "case",
           [
+            "match",
+            [
+              "get",
+              "mtbScaleImba"
+            ],
+            0,
+            true,
+            1,
+            true,
+            2,
+            true,
+            3,
+            true,
+            4,
+            true,
+            false
+          ],
+          [
+            "match",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScaleImba"
+              ]
+            ],
+            0,
+            "#ffffff",
+            1,
+            "#2e7d32",
+            2,
+            "#1565c0",
+            3,
+            "#000000",
+            4,
+            "#ff9800",
+            "#ffffff"
+          ],
+          [
             "!=",
             [
               "get",
@@ -6376,7 +6643,19 @@
             3
           ],
           "#d32f2f",
-          "#000000"
+          [
+            "==",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
+            ],
+            4
+          ],
+          "#000000",
+          "#ff9800"
         ],
         "text-halo-color": "#ffffff",
         "text-halo-width": 1.2

@@ -9,17 +9,37 @@ const MTB_TRAIL_COLOR_GREEN = "#2e7d32";
 const MTB_TRAIL_COLOR_BLUE = "#1565c0";
 const MTB_TRAIL_COLOR_RED = "#d32f2f";
 const MTB_TRAIL_COLOR_BLACK = "#000000";
+const MTB_TRAIL_COLOR_ORANGE = "#ff9800";
 const TRAIL_COLOR_OTHER = "#7b1fa2";
+const IMBA_TRAIL_COLOR_WHITE = "#ffffff";
+/** Dashed MTB lines — solid routes stay continuous for contrast */
+const MTB_TRAIL_DASHARRAY = [1, 2];
+
+/** Keep in sync with openbikemap.org src/types/EuroVelo.ts */
+const EUROVELO_ROUTE_COLOR = "#003399";
 
 /** Keep in sync with openbikemap.org src/types/RouteNetwork.ts */
-const ROUTE_NETWORK_COLOR_ICN = "#b71c1c";
-const ROUTE_NETWORK_COLOR_NCN = "#c62828";
-const ROUTE_NETWORK_COLOR_RCN = "#e65100";
+const ROUTE_NETWORK_COLOR_ICN = "#0d47a1";
+const ROUTE_NETWORK_COLOR_NCN = "#d32f2f";
+const ROUTE_NETWORK_COLOR_RCN = "#42a5f5";
 const ROUTE_NETWORK_COLOR_LCN = "#2e7d32";
-const ROUTE_NETWORK_DEFAULT_COLOR = "#1565c0";
+const ROUTE_NETWORK_DEFAULT_COLOR = "#7b1fa2";
+
+const euroVeloRouteMatch = [
+  "any",
+  [">=", ["index-of", "EuroVelo", ["coalesce", ["get", "name"], ""]], 0],
+  [
+    ">=",
+    ["index-of", "eurovelo", ["downcase", ["coalesce", ["get", "name"], ""]]],
+    0,
+  ],
+  ["==", ["slice", ["upcase", ["coalesce", ["get", "ref"], ""]], 0, 2], "EV"],
+];
 
 const routeLineColor = [
   "case",
+  euroVeloRouteMatch,
+  EUROVELO_ROUTE_COLOR,
   ["has", "network"],
   [
     "match",
@@ -37,8 +57,42 @@ const routeLineColor = [
   ROUTE_NETWORK_DEFAULT_COLOR,
 ];
 
+/** IMBA line colors — matches filter legend icons (0=white … 3=black, 4=orange) */
+const imbaLineColor = [
+  "match",
+  ["to-number", ["get", "mtbScaleImba"]],
+  0,
+  IMBA_TRAIL_COLOR_WHITE,
+  1,
+  MTB_TRAIL_COLOR_GREEN,
+  2,
+  MTB_TRAIL_COLOR_BLUE,
+  3,
+  MTB_TRAIL_COLOR_BLACK,
+  4,
+  MTB_TRAIL_COLOR_ORANGE,
+  IMBA_TRAIL_COLOR_WHITE,
+];
+
+/** STS (mtb:scale) trails only — IMBA trails use trails-imba layers */
 const trailLineColor = [
   "case",
+  [
+    "match",
+    ["get", "mtbScaleImba"],
+    0,
+    true,
+    1,
+    true,
+    2,
+    true,
+    3,
+    true,
+    4,
+    true,
+    false,
+  ],
+  imbaLineColor,
   ["!=", ["get", "category"], "mtb_trail"],
   ["coalesce", ["get", "color"], TRAIL_COLOR_OTHER],
   ["!", ["has", "mtbScale"]],
@@ -49,7 +103,9 @@ const trailLineColor = [
   MTB_TRAIL_COLOR_BLUE,
   ["==", ["to-number", ["get", "mtbScale"]], 3],
   MTB_TRAIL_COLOR_RED,
+  ["==", ["to-number", ["get", "mtbScale"]], 4],
   MTB_TRAIL_COLOR_BLACK,
+  MTB_TRAIL_COLOR_ORANGE,
 ];
 
 const bikeLayers = [
@@ -108,6 +164,7 @@ const bikeLayers = [
       "line-color": "#ffffff",
       "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2, 14, 7],
       "line-opacity": 0.9,
+      "line-dasharray": MTB_TRAIL_DASHARRAY,
     },
   },
   {
@@ -123,6 +180,23 @@ const bikeLayers = [
     paint: {
       "line-color": trailLineColor,
       "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 14, 4],
+      "line-dasharray": MTB_TRAIL_DASHARRAY,
+    },
+  },
+  {
+    id: "trails-imba",
+    type: "line",
+    source: "openbikemap",
+    "source-layer": "trails",
+    minzoom: 10,
+    layout: {
+      "line-cap": "round",
+      "line-join": "round",
+    },
+    paint: {
+      "line-color": imbaLineColor,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.5, 14, 4],
+      "line-dasharray": MTB_TRAIL_DASHARRAY,
     },
   },
   {

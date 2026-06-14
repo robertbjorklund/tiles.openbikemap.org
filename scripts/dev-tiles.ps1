@@ -1,6 +1,6 @@
 param(
   [string]$Bbox,
-  [ValidateSet("stockholm", "sweden", "resorts")]
+  [ValidateSet("stockholm", "stockholm_100km", "sweden", "resorts")]
   [string]$Region = "stockholm",
   [switch]$SkipDownload,
   [switch]$NoTileserver
@@ -27,6 +27,13 @@ Remove-Item Env:BBOX_GRID -ErrorAction SilentlyContinue
 Remove-Item Env:TRAILS_BBOX_GRID -ErrorAction SilentlyContinue
 Remove-Item Env:OVERPASS_GRID_PAUSE_MS -ErrorAction SilentlyContinue
 
+if ($Region -eq "stockholm_100km") {
+  $env:MAX_OLD_SPACE_SIZE = "8192"
+  $env:OVERPASS_TIMEOUT = "5400"
+  Write-Host "    ~100 km radius from Stockholm city (bbox ~200x200 km)."
+  Write-Host "    Using 8 GB memory and 90 min Overpass timeout."
+}
+
 if ($Region -eq "sweden") {
   $env:MAX_OLD_SPACE_SIZE = "8192"
   $env:OVERPASS_TIMEOUT = "7200"
@@ -45,7 +52,7 @@ if ($Region -eq "resorts") {
 $dockerArgs = @(
   "compose",
   "-f", (Join-Path $ProcessorDir "docker-compose.yml"),
-  "run", "--rm", "processor"
+  "run", "--rm", "--build", "processor"
 )
 
 if ($SkipDownload) {
