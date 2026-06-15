@@ -15,6 +15,9 @@ const IMBA_TRAIL_COLOR_WHITE = "#ffffff";
 /** Dashed MTB lines — solid routes stay continuous for contrast */
 const MTB_TRAIL_DASHARRAY = [1, 2];
 
+/** All bike line layers — regional overview from ~z8 (7.5 min) */
+const OPENBIKEMAP_LINE_MIN_ZOOM = 7.5;
+
 /** High-res Terrarium DEM (512 px) — replaces coarse AWS Tilezen 256 px tiles */
 const DEM_SOURCE = {
   type: "raster-dem",
@@ -164,6 +167,32 @@ const imbaLineColor = [
   IMBA_TRAIL_COLOR_WHITE,
 ];
 
+const isWhiteImbaTrail = [
+  "all",
+  ["has", "mtbScaleImba"],
+  ["match", ["get", "mtbScaleImba"], 0, true, false],
+];
+
+/** Casing under dashed MTB core — light gray for white IMBA 0, white otherwise */
+const trailCasingLineColor = [
+  "case",
+  isWhiteImbaTrail,
+  "#d4d4d4",
+  "#ffffff",
+];
+
+const trailImbaLineWidth = [
+  "interpolate",
+  ["linear"],
+  ["zoom"],
+  OPENBIKEMAP_LINE_MIN_ZOOM,
+  ["case", isWhiteImbaTrail, 1.2, 0.8],
+  10,
+  ["case", isWhiteImbaTrail, 1.4, 1],
+  14,
+  ["case", isWhiteImbaTrail, 3.2, 2.8],
+];
+
 /** STS (mtb:scale) trails only — IMBA trails use trails-imba layers */
 const trailLineColor = [
   "case",
@@ -202,11 +231,21 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "routes",
-    minzoom: 8,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     paint: {
       "line-color": "#ffffff",
-      "line-width": ["interpolate", ["linear"], ["zoom"], 8, 2, 14, 8],
-      "line-opacity": 0.85,
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        OPENBIKEMAP_LINE_MIN_ZOOM,
+        1.8,
+        10,
+        2.5,
+        14,
+        5.5,
+      ],
+      "line-opacity": 0.95,
     },
   },
   {
@@ -214,14 +253,42 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "routes",
-    minzoom: 8,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     layout: {
       "line-cap": "round",
       "line-join": "round",
     },
     paint: {
       "line-color": routeLineColor,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.5, 14, 5],
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        OPENBIKEMAP_LINE_MIN_ZOOM,
+        0.8,
+        10,
+        1,
+        14,
+        2.8,
+      ],
+    },
+  },
+  {
+    id: "routes-label-stripe",
+    type: "symbol",
+    source: "openbikemap",
+    "source-layer": "routes",
+    minzoom: 11,
+    layout: {
+      "symbol-placement": "line",
+      "text-field": ["coalesce", ["get", "name"], ["get", "ref"]],
+      "text-font": ["Noto Sans Bold"],
+      "text-size": 12,
+    },
+    paint: {
+      "text-color": routeLineColor,
+      "text-halo-color": routeLineColor,
+      "text-halo-width": 5,
     },
   },
   {
@@ -237,9 +304,9 @@ const bikeLayers = [
       "text-size": 12,
     },
     paint: {
-      "text-color": routeLineColor,
+      "text-color": "#212121",
       "text-halo-color": "#ffffff",
-      "text-halo-width": 1.5,
+      "text-halo-width": 1.75,
     },
   },
   {
@@ -247,12 +314,21 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "trails",
-    minzoom: 10,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     paint: {
-      "line-color": "#ffffff",
-      "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2, 14, 7],
-      "line-opacity": 0.9,
-      "line-dasharray": MTB_TRAIL_DASHARRAY,
+      "line-color": trailCasingLineColor,
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        OPENBIKEMAP_LINE_MIN_ZOOM,
+        2,
+        10,
+        3,
+        14,
+        6.5,
+      ],
+      "line-opacity": 0.95,
     },
   },
   {
@@ -260,14 +336,24 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "trails",
-    minzoom: 10,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     layout: {
       "line-cap": "round",
       "line-join": "round",
     },
     paint: {
       "line-color": trailLineColor,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 14, 4],
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        OPENBIKEMAP_LINE_MIN_ZOOM,
+        0.8,
+        10,
+        1,
+        14,
+        2.8,
+      ],
       "line-dasharray": MTB_TRAIL_DASHARRAY,
     },
   },
@@ -276,15 +362,33 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "trails",
-    minzoom: 10,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     layout: {
       "line-cap": "round",
       "line-join": "round",
     },
     paint: {
       "line-color": imbaLineColor,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1.5, 14, 4],
+      "line-width": trailImbaLineWidth,
       "line-dasharray": MTB_TRAIL_DASHARRAY,
+    },
+  },
+  {
+    id: "trails-label-stripe",
+    type: "symbol",
+    source: "openbikemap",
+    "source-layer": "trails",
+    minzoom: 13,
+    layout: {
+      "symbol-placement": "line",
+      "text-field": ["coalesce", ["get", "name"], ["get", "ref"]],
+      "text-font": ["Noto Sans Bold"],
+      "text-size": 12,
+    },
+    paint: {
+      "text-color": trailLineColor,
+      "text-halo-color": trailLineColor,
+      "text-halo-width": 5,
     },
   },
   {
@@ -297,12 +401,12 @@ const bikeLayers = [
       "symbol-placement": "line",
       "text-field": ["coalesce", ["get", "name"], ["get", "ref"]],
       "text-font": ["Noto Sans Regular"],
-      "text-size": 11,
+      "text-size": 12,
     },
     paint: {
-      "text-color": trailLineColor,
+      "text-color": "#212121",
       "text-halo-color": "#ffffff",
-      "text-halo-width": 1.2,
+      "text-halo-width": 1.75,
     },
   },
   {
@@ -310,11 +414,11 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "trails",
-    minzoom: 10,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     paint: {
       "line-color": "#000000",
       "line-opacity": 0,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 10, 8, 14, 16],
+      "line-width": ["interpolate", ["linear"], ["zoom"], OPENBIKEMAP_LINE_MIN_ZOOM, 8, 14, 16],
     },
   },
   {
@@ -322,11 +426,11 @@ const bikeLayers = [
     type: "line",
     source: "openbikemap",
     "source-layer": "routes",
-    minzoom: 8,
+    minzoom: OPENBIKEMAP_LINE_MIN_ZOOM,
     paint: {
       "line-color": "#000000",
       "line-opacity": 0,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 8, 10, 14, 18],
+      "line-width": ["interpolate", ["linear"], ["zoom"], OPENBIKEMAP_LINE_MIN_ZOOM, 10, 14, 18],
     },
   },
 ];

@@ -6165,7 +6165,7 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "routes",
-      "minzoom": 8,
+      "minzoom": 7.5,
       "paint": {
         "line-color": "#ffffff",
         "line-width": [
@@ -6176,12 +6176,14 @@
           [
             "zoom"
           ],
-          8,
-          2,
+          7.5,
+          1.8,
+          10,
+          2.5,
           14,
-          8
+          5.5
         ],
-        "line-opacity": 0.85
+        "line-opacity": 0.95
       }
     },
     {
@@ -6189,7 +6191,7 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "routes",
-      "minzoom": 8,
+      "minzoom": 7.5,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -6286,15 +6288,17 @@
           [
             "zoom"
           ],
-          8,
-          1.5,
+          7.5,
+          0.8,
+          10,
+          1,
           14,
-          5
+          2.8
         ]
       }
     },
     {
-      "id": "routes-label",
+      "id": "routes-label-stripe",
       "type": "symbol",
       "source": "openbikemap",
       "source-layer": "routes",
@@ -6313,7 +6317,7 @@
           ]
         ],
         "text-font": [
-          "Noto Sans Regular"
+          "Noto Sans Bold"
         ],
         "text-size": 12
       },
@@ -6401,8 +6405,120 @@
           ],
           "#7b1fa2"
         ],
+        "text-halo-color": [
+          "case",
+          [
+            "any",
+            [
+              ">=",
+              [
+                "index-of",
+                "EuroVelo",
+                [
+                  "coalesce",
+                  [
+                    "get",
+                    "name"
+                  ],
+                  ""
+                ]
+              ],
+              0
+            ],
+            [
+              ">=",
+              [
+                "index-of",
+                "eurovelo",
+                [
+                  "downcase",
+                  [
+                    "coalesce",
+                    [
+                      "get",
+                      "name"
+                    ],
+                    ""
+                  ]
+                ]
+              ],
+              0
+            ],
+            [
+              "==",
+              [
+                "slice",
+                [
+                  "upcase",
+                  [
+                    "coalesce",
+                    [
+                      "get",
+                      "ref"
+                    ],
+                    ""
+                  ]
+                ],
+                0,
+                2
+              ],
+              "EV"
+            ]
+          ],
+          "#003399",
+          [
+            "has",
+            "network"
+          ],
+          [
+            "match",
+            [
+              "get",
+              "network"
+            ],
+            "icn",
+            "#0d47a1",
+            "ncn",
+            "#d32f2f",
+            "rcn",
+            "#42a5f5",
+            "lcn",
+            "#2e7d32",
+            "#7b1fa2"
+          ],
+          "#7b1fa2"
+        ],
+        "text-halo-width": 5
+      }
+    },
+    {
+      "id": "routes-label",
+      "type": "symbol",
+      "source": "openbikemap",
+      "source-layer": "routes",
+      "minzoom": 11,
+      "layout": {
+        "symbol-placement": "line",
+        "text-field": [
+          "coalesce",
+          [
+            "get",
+            "name"
+          ],
+          [
+            "get",
+            "ref"
+          ]
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": 12
+      },
+      "paint": {
+        "text-color": "#212121",
         "text-halo-color": "#ffffff",
-        "text-halo-width": 1.5
+        "text-halo-width": 1.75
       }
     },
     {
@@ -6410,9 +6526,30 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "trails",
-      "minzoom": 10,
+      "minzoom": 7.5,
       "paint": {
-        "line-color": "#ffffff",
+        "line-color": [
+          "case",
+          [
+            "all",
+            [
+              "has",
+              "mtbScaleImba"
+            ],
+            [
+              "match",
+              [
+                "get",
+                "mtbScaleImba"
+              ],
+              0,
+              true,
+              false
+            ]
+          ],
+          "#d4d4d4",
+          "#ffffff"
+        ],
         "line-width": [
           "interpolate",
           [
@@ -6421,16 +6558,14 @@
           [
             "zoom"
           ],
-          10,
+          7.5,
           2,
+          10,
+          3,
           14,
-          7
+          6.5
         ],
-        "line-opacity": 0.9,
-        "line-dasharray": [
-          1,
-          2
-        ]
+        "line-opacity": 0.95
       }
     },
     {
@@ -6438,7 +6573,7 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "trails",
-      "minzoom": 10,
+      "minzoom": 7.5,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -6558,10 +6693,12 @@
           [
             "zoom"
           ],
+          7.5,
+          0.8,
           10,
           1,
           14,
-          4
+          2.8
         ],
         "line-dasharray": [
           1,
@@ -6574,7 +6711,7 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "trails",
-      "minzoom": 10,
+      "minzoom": 7.5,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -6609,10 +6746,75 @@
           [
             "zoom"
           ],
+          7.5,
+          [
+            "case",
+            [
+              "all",
+              [
+                "has",
+                "mtbScaleImba"
+              ],
+              [
+                "match",
+                [
+                  "get",
+                  "mtbScaleImba"
+                ],
+                0,
+                true,
+                false
+              ]
+            ],
+            1.2,
+            0.8
+          ],
           10,
-          1.5,
+          [
+            "case",
+            [
+              "all",
+              [
+                "has",
+                "mtbScaleImba"
+              ],
+              [
+                "match",
+                [
+                  "get",
+                  "mtbScaleImba"
+                ],
+                0,
+                true,
+                false
+              ]
+            ],
+            1.4,
+            1
+          ],
           14,
-          4
+          [
+            "case",
+            [
+              "all",
+              [
+                "has",
+                "mtbScaleImba"
+              ],
+              [
+                "match",
+                [
+                  "get",
+                  "mtbScaleImba"
+                ],
+                0,
+                true,
+                false
+              ]
+            ],
+            3.2,
+            2.8
+          ]
         ],
         "line-dasharray": [
           1,
@@ -6621,7 +6823,7 @@
       }
     },
     {
-      "id": "trails-label",
+      "id": "trails-label-stripe",
       "type": "symbol",
       "source": "openbikemap",
       "source-layer": "trails",
@@ -6640,9 +6842,9 @@
           ]
         ],
         "text-font": [
-          "Noto Sans Regular"
+          "Noto Sans Bold"
         ],
-        "text-size": 11
+        "text-size": 12
       },
       "paint": {
         "text-color": [
@@ -6751,8 +6953,143 @@
           "#000000",
           "#ff9800"
         ],
+        "text-halo-color": [
+          "case",
+          [
+            "match",
+            [
+              "get",
+              "mtbScaleImba"
+            ],
+            0,
+            true,
+            1,
+            true,
+            2,
+            true,
+            3,
+            true,
+            4,
+            true,
+            false
+          ],
+          [
+            "match",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScaleImba"
+              ]
+            ],
+            0,
+            "#ffffff",
+            1,
+            "#2e7d32",
+            2,
+            "#1565c0",
+            3,
+            "#000000",
+            4,
+            "#ff9800",
+            "#ffffff"
+          ],
+          [
+            "!",
+            [
+              "has",
+              "mtbScale"
+            ]
+          ],
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#7b1fa2"
+          ],
+          [
+            "<=",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
+            ],
+            1
+          ],
+          "#2e7d32",
+          [
+            "==",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
+            ],
+            2
+          ],
+          "#1565c0",
+          [
+            "==",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
+            ],
+            3
+          ],
+          "#d32f2f",
+          [
+            "==",
+            [
+              "to-number",
+              [
+                "get",
+                "mtbScale"
+              ]
+            ],
+            4
+          ],
+          "#000000",
+          "#ff9800"
+        ],
+        "text-halo-width": 5
+      }
+    },
+    {
+      "id": "trails-label",
+      "type": "symbol",
+      "source": "openbikemap",
+      "source-layer": "trails",
+      "minzoom": 13,
+      "layout": {
+        "symbol-placement": "line",
+        "text-field": [
+          "coalesce",
+          [
+            "get",
+            "name"
+          ],
+          [
+            "get",
+            "ref"
+          ]
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": 12
+      },
+      "paint": {
+        "text-color": "#212121",
         "text-halo-color": "#ffffff",
-        "text-halo-width": 1.2
+        "text-halo-width": 1.75
       }
     },
     {
@@ -6760,7 +7097,7 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "trails",
-      "minzoom": 10,
+      "minzoom": 7.5,
       "paint": {
         "line-color": "#000000",
         "line-opacity": 0,
@@ -6772,7 +7109,7 @@
           [
             "zoom"
           ],
-          10,
+          7.5,
           8,
           14,
           16
@@ -6784,7 +7121,7 @@
       "type": "line",
       "source": "openbikemap",
       "source-layer": "routes",
-      "minzoom": 8,
+      "minzoom": 7.5,
       "paint": {
         "line-color": "#000000",
         "line-opacity": 0,
@@ -6796,7 +7133,7 @@
           [
             "zoom"
           ],
-          8,
+          7.5,
           10,
           14,
           18
