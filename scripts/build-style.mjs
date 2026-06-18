@@ -117,6 +117,8 @@ const ROUTE_NETWORK_COLOR_NCN = "#d32f2f";
 const ROUTE_NETWORK_COLOR_RCN = "#42a5f5";
 const ROUTE_NETWORK_COLOR_LCN = "#2e7d32";
 const ROUTE_NETWORK_DEFAULT_COLOR = "#7b1fa2";
+/** route=mtb without a parseable OSM colour — keep in sync with openbikedata-processor MtbRouteColors.ts */
+const MTB_ROUTE_DEFAULT_COLOR = "#795548";
 
 const euroVeloRouteMatch = [
   "any",
@@ -131,6 +133,8 @@ const euroVeloRouteMatch = [
 
 const routeLineColor = [
   "case",
+  ["==", ["get", "osmRouteType"], "mtb"],
+  ["coalesce", ["get", "color"], MTB_ROUTE_DEFAULT_COLOR],
   euroVeloRouteMatch,
   EUROVELO_ROUTE_COLOR,
   ["has", "network"],

@@ -62,6 +62,22 @@
         "line-color": [
           "case",
           [
+            "==",
+            [
+              "get",
+              "osmRouteType"
+            ],
+            "mtb"
+          ],
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#795548"
+          ],
+          [
             "any",
             [
               ">=",
@@ -187,6 +203,22 @@
         "text-color": [
           "case",
           [
+            "==",
+            [
+              "get",
+              "osmRouteType"
+            ],
+            "mtb"
+          ],
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#795548"
+          ],
+          [
             "any",
             [
               ">=",
@@ -269,6 +301,22 @@
         ],
         "text-halo-color": [
           "case",
+          [
+            "==",
+            [
+              "get",
+              "osmRouteType"
+            ],
+            "mtb"
+          ],
+          [
+            "coalesce",
+            [
+              "get",
+              "color"
+            ],
+            "#795548"
+          ],
           [
             "any",
             [
