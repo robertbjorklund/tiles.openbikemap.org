@@ -3,7 +3,8 @@ param(
   [ValidateSet("stockholm", "stockholm_100km", "sweden", "resorts")]
   [string]$Region = "stockholm",
   [switch]$SkipDownload,
-  [switch]$NoTileserver
+  [switch]$NoTileserver,
+  [switch]$Elevation
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,9 +24,15 @@ Write-Host "    Large regions can take 1-3+ hours (Overpass download + tippecano
 $env:BBOX = $Bbox
 $env:GENERATE_TILES = "1"
 $env:OVERPASS_TIMEOUT = "1800"
+Remove-Item Env:ENABLE_ELEVATION -ErrorAction SilentlyContinue
 Remove-Item Env:BBOX_GRID -ErrorAction SilentlyContinue
 Remove-Item Env:TRAILS_BBOX_GRID -ErrorAction SilentlyContinue
 Remove-Item Env:OVERPASS_GRID_PAUSE_MS -ErrorAction SilentlyContinue
+
+if ($Elevation) {
+  $env:ENABLE_ELEVATION = "1"
+  Write-Host "    Elevation profiles: enabled (DEM Terrarium tiles, adds build time)."
+}
 
 if ($Region -eq "stockholm_100km") {
   $env:MAX_OLD_SPACE_SIZE = "8192"

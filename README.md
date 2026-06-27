@@ -25,6 +25,7 @@ This repo mirrors the role of `tiles.openskimap.org` in the OpenSkiMap stack: it
 | Stockholm (dev) | `.\scripts\dev-tiles.ps1` | Default test area, ~5–15 min |
 | Sweden | `.\scripts\dev-tiles-sweden.ps1` | Full country, **2–6+ hours**; trails split into 6 Overpass grid cells |
 | Resort towns | `.\scripts\dev-tiles-resorts.ps1` | Are, Salen, Rorbacksnas, Lofsdalen, Jarvso (~15–30 min) |
+| **Sälen patch** | `.\scripts\merge-salen.ps1 -Fetch` | Refresh Salen/Sherpa OSM into existing `data/` without full Sweden rebuild (~10–20 min) |
 
 Sweden bbox: `[10.96, 55.34, 24.18, 69.06]` (mainland). **Trails** download in a 6-cell grid (`TRAILS_BBOX_GRID`); **routes** use one query for the full region `BBOX`. Overpass may return 504/429 — the processor retries and rotates mirrors automatically.
 
@@ -47,6 +48,15 @@ Re-run tile build without re-downloading OSM data:
 ```powershell
 .\scripts\dev-tiles.ps1 -SkipDownload
 ```
+
+Add elevation profiles (DEM sampling, increases prepare time; GeoJSON/API only, not MVT):
+
+```powershell
+.\scripts\dev-tiles.ps1 -SkipDownload -Elevation
+.\scripts\dev-tiles-sweden.ps1 -SkipDownload -Elevation
+```
+
+After Sweden elevation rebuild, re-import API on VPS (see [openbikemap.org/docs/DEPLOY-VPS.md](../openbikemap.org/docs/DEPLOY-VPS.md)).
 
 ### Manual steps
 
